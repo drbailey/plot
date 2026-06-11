@@ -1,0 +1,38 @@
+# ============================================
+# PLOT CONFIGURATION
+# ============================================
+# Global configuration for the Plot story management system.
+#
+# USER-SPECIFIC PATHS: Create config.local.yml (gitignored) with your paths.
+# Copy from config.example.yml and customize for your environment.
+
+# Default paths (override in config.local.yml)
+# These are referenced in templates as {variable_name}
+paths:
+  python: "python3"
+  pytest: "pytest"
+  ruff: "ruff"
+  plot: "plot"
+  stories_dir: "~/stories"
+  workspace: "~"
+
+defaults:
+  max_attempts_per_task: 3
+  max_iterations: 21
+  task_file_pattern: "task-{n}-{slug}.md"
+
+# Agent model configuration
+# Configures AI models used by Plot's planning/execution agents.
+agents:
+  default:
+    model: ""
+    endpoint: ""
+    api_key_env: ""
+  roles: {}
+
+# Skills configuration
+skills:
+  core:
+    - workflow
+    - flow-utils
+  dependencies: {}

@@ -1,0 +1,62 @@
+# ============================================
+# PLOT LOCAL CONFIGURATION EXAMPLE
+# ============================================
+# Copy this file to config.local.yml and customize for your environment.
+# config.local.yml is gitignored and will not be committed.
+
+# User-specific paths (overrides config.yml defaults)
+paths:
+  # Python interpreter -- adjust to your pyenv/venv setup
+  #
+  # macOS / Linux (pyenv):
+  #   python: "/Users/YOURNAME/.pyenv/versions/primary/bin/python"
+  #   pytest: "/Users/YOURNAME/.pyenv/versions/primary/bin/pytest"
+  #   ruff:   "/Users/YOURNAME/.pyenv/versions/primary/bin/ruff"
+  #   plot:   "/Users/YOURNAME/.pyenv/versions/primary/bin/plot"
+  #
+  # Windows (pyenv-win):
+  #   python: "C:/Users/YOURNAME/.pyenv/pyenv-win/versions/primary/Scripts/python.exe"
+  #   pytest: "C:/Users/YOURNAME/.pyenv/pyenv-win/versions/primary/Scripts/pytest.exe"
+  #   ruff:   "C:/Users/YOURNAME/.pyenv/pyenv-win/versions/primary/Scripts/ruff.exe"
+  #   plot:   "C:/Users/YOURNAME/.pyenv/pyenv-win/versions/primary/Scripts/plot.exe"
+  #
+  python: "/Users/YOURNAME/.pyenv/versions/primary/bin/python"
+  pytest: "/Users/YOURNAME/.pyenv/versions/primary/bin/pytest"
+  ruff: "/Users/YOURNAME/.pyenv/versions/primary/bin/ruff"
+  plot: "/Users/YOURNAME/.pyenv/versions/primary/bin/plot"
+
+  # Directory where story data is stored
+  stories_dir: "/Users/YOURNAME/path/to/stories"
+
+  # Root workspace directory (parent of all repos)
+  workspace: "/Users/YOURNAME/path/to/workspace"
+
+# Agent model configuration (optional)
+# Configures AI models used by Plot's planning/execution agents.
+# Each role inherits from agents.default and overrides only the fields it specifies.
+agents:
+  default:
+    # Model identifier passed to the AI provider (e.g. "claude-opus-4", "gpt-4o")
+    model: "claude-opus-4"
+
+    # API endpoint URL; leave empty to use the provider's default
+    endpoint: ""
+
+    # Name of the environment variable that holds the API key
+    api_key_env: "ANTHROPIC_API_KEY"
+
+  # Per-role overrides -- unspecified fields fall back to agents.default
+  roles:
+    planner:
+      model: "claude-opus-4"
+    executor:
+      model: "claude-sonnet-4"
+    verifier:
+      model: "claude-sonnet-4"
+
+# User-registered skills (optional)
+# Register your own skills here for discovery via `plot skills`
+# skills:
+#   my-skill:
+#     path: "/path/to/my-skill/SKILL.md"
+#     description: "What this skill does"

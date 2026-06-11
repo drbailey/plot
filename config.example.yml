@@ -55,8 +55,10 @@ agents:
       model: "claude-sonnet-4"
 
 # User-registered skills (optional)
-# Register your own skills here for discovery via `plot skills`
+# Register your own skills here for discovery via `plot skills`.
+# All user skills live under the skills.user key.
 # skills:
-#   my-skill:
-#     path: "/path/to/my-skill/SKILL.md"
-#     description: "What this skill does"
+#   user:
+#     my-skill:
+#       path: "/path/to/my-skill/SKILL.md"
+#       description: "What this skill does"

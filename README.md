@@ -32,6 +32,24 @@ If `plot_v1` is installed in your global Python environment, the `plot` command 
 
 Copy `config.example.yml` to `config.local.yml` and edit paths for your environment. The local file is gitignored and never committed.
 
+## Code Conventions
+
+### When to use `StrEnum`
+
+Use `StrEnum` only when the set of values is **closed by architecture** — meaning adding a new member requires an intentional design change, not just a label addition.
+
+Good candidates:
+- State-machine outputs where every possible value has distinct handling by callers (`RouteAction`)
+- Protocol-level event names persisted to a database and queried by type (`Events`)
+- Values that map one-to-one with architectural concepts, where a new value = a new concept (`SkillSource`)
+
+Not worth the cost:
+- User-supplied config strings that are passed through opaquely (`env_type: "venv"`)
+- Detection labels that could grow freely as new tools are supported (`test_framework: "pytest"`)
+- Any field typed as `str` where the enum is never actually enforced
+
+When in doubt: if callers would write `if x == "some_value"` rather than `if x == MyEnum.SOME_VALUE`, the enum is adding friction without adding safety — use a plain string.
+
 ## Development
 
 ```bash

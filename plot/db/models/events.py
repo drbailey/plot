@@ -1,8 +1,4 @@
-"""Data models for the event logger."""
-
-from dataclasses import dataclass
 from enum import StrEnum
-from typing import Any
 
 
 class Events(StrEnum):
@@ -54,17 +50,3 @@ class Events(StrEnum):
 
     # Knowledge
     KNOWLEDGE_RECORDED = "KNOWLEDGE_RECORDED"
-
-
-@dataclass
-class LogRow:
-    """Represents a log entry."""
-
-    id: int
-    timestamp: str
-    level: str
-    event: str
-    exec_number: int | None = None
-    task_id: int | None = None
-    message: str | None = None
-    details: dict[str, Any] | None = None

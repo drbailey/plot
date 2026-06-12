@@ -5,8 +5,9 @@ import sqlite3
 from pathlib import Path
 from typing import Any
 
-from .._base import _now, _SQLiteBase
-from .models import LogRow
+from ..clients.sqlite import _SQLiteBase
+from ..models import LogRow
+from ..utils import _now
 
 
 class StoryLogger(_SQLiteBase):

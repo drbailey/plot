@@ -17,10 +17,9 @@ Quick start::
 from .knowledge.client import KnowledgeDB
 from .knowledge.models import ArtifactRow, DecisionRow, PatternRow, RunRow, SearchResult
 from .logger.client import StoryLogger
-from .logger.models import Events, LogRow
+from .models import Events, LogRow, StageRow, TaskRow
 from .protocols import EventLogger, StoryStore
 from .story.client import StoryDB
-from .story.models import StageRow, TaskRow
 
 __all__ = [
     # Implementations

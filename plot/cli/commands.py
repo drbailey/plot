@@ -38,6 +38,25 @@ class Arg:
 
 
 @dataclass(slots=True)
+class Pos:
+    """Force a parameter to render as an optional positional argument (nargs='?').
+
+    Use with ``Annotated[str | None, Pos()]`` on parameters that should accept
+    a positional value on the command line but remain optional (default None).
+
+    Example::
+
+        def begin(
+            story: str,
+            repo_path: Annotated[str | None, Pos(help="Repo path.")] = None,
+        ) -> ...:
+            ...
+    """
+
+    help: str = ""
+
+
+@dataclass(slots=True)
 class CommandDefinition:
     """Metadata describing one CLI command."""
 

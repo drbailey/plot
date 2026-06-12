@@ -1,6 +1,6 @@
 """Story workflow database subpackage."""
 
+from ..models import StageRow, TaskRow
 from .client import StoryDB
-from .models import StageRow, TaskRow
 
 __all__ = ["StoryDB", "StageRow", "TaskRow"]

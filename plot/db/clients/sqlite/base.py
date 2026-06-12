@@ -3,13 +3,7 @@
 import sqlite3
 from collections.abc import Generator
 from contextlib import contextmanager
-from datetime import datetime
 from pathlib import Path
-
-
-def _now() -> str:
-    """Return current UTC timestamp as an ISO 8601 string."""
-    return datetime.utcnow().isoformat() + "Z"
 
 
 class _SQLiteBase:
@@ -25,7 +19,7 @@ class _SQLiteBase:
         try:
             yield conn
             conn.commit()
-        except Exception:
+        except BaseException:
             conn.rollback()
             raise
         finally:

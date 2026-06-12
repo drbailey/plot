@@ -3,7 +3,8 @@
 import sqlite3
 from pathlib import Path
 
-from .._base import _now, _SQLiteBase
+from ..clients.sqlite import _SQLiteBase
+from ..utils import _now
 from .models import RunRow, SearchResult
 from .schema import SCHEMA, SCHEMA_VERSION
 

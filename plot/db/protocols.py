@@ -6,8 +6,7 @@ SQLite implementations without changing call sites in core.
 
 from typing import Any, Protocol, runtime_checkable
 
-from .logger.models import LogRow
-from .story.models import StageRow, TaskRow
+from .models import LogRow, StageRow, TaskRow
 
 
 @runtime_checkable

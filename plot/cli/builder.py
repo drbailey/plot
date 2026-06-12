@@ -34,7 +34,7 @@ import typing
 from pathlib import Path
 from typing import Annotated, Any, Literal, get_args, get_origin
 
-from plot.cli.commands import COMMAND_REGISTRY, Arg, CommandDefinition
+from plot.cli.commands import COMMAND_REGISTRY, Arg, CommandDefinition, Pos
 from plot.core.base import output
 from plot.core.base.errors import PlotError
 
@@ -91,18 +91,28 @@ def _add_one_argument(
 ) -> None:
     has_default = param.default is not inspect.Parameter.empty
 
-    # Unwrap Annotated[T, Arg(...)] → extract inner type and Arg metadata
+    # Unwrap Annotated[T, Arg(...)] or Annotated[T, Pos(...)] — extract inner type and metadata
     arg_meta: Arg | None = None
+    pos_meta: Pos | None = None
     if get_origin(annotation) is Annotated:
         inner_args = get_args(annotation)
         annotation = inner_args[0]
         for meta in inner_args[1:]:
             if isinstance(meta, Arg):
                 arg_meta = meta
-                break
+            elif isinstance(meta, Pos):
+                pos_meta = meta
 
-    help_text = arg_meta.help if arg_meta else ""
+    help_text = (pos_meta or arg_meta).help if (pos_meta or arg_meta) else ""
     short = arg_meta.short if arg_meta else None
+
+    # Pos marker → optional positional (nargs='?')
+    if pos_meta is not None:
+        kwargs: dict[str, Any] = {"nargs": "?", "default": param.default if has_default else None}
+        if help_text:
+            kwargs["help"] = help_text
+        parser.add_argument(param.name, **kwargs)
+        return
 
     # A short alias forces flag rendering (never positional)
     has_short = short is not None

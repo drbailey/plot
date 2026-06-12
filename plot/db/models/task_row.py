@@ -1,5 +1,3 @@
-"""Data models for the story workflow database."""
-
 from dataclasses import dataclass
 
 
@@ -24,16 +22,3 @@ class TaskRow:
     work_log: str | None = None
     verify_status: str | None = None
     verify_file: str | None = None
-
-
-@dataclass
-class StageRow:
-    """Represents a stage entry."""
-
-    story: str
-    iteration: int
-    stage: str
-    status: str
-    recorded_at: str
-    skip_reason: str | None = None
-    artifact_paths: str | None = None

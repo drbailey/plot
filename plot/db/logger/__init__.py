@@ -1,6 +1,6 @@
 """Event logger subpackage."""
 
+from ..models import Events, LogRow
 from .client import StoryLogger
-from .models import Events, LogRow
 
 __all__ = ["StoryLogger", "Events", "LogRow"]

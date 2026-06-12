@@ -2,14 +2,17 @@
 
 import json
 import sqlite3
+from dataclasses import fields as dataclass_fields
 from pathlib import Path
 from typing import Any
 
-from .._base import _now, _SQLiteBase
-from ..logger.schema import SCHEMA as LOGGING_SCHEMA
-from .models import StageRow, TaskRow
-from .schema import SCHEMA as STORY_SCHEMA
+from ..clients.sqlite import _SQLiteBase
+from ..models import StageRow, TaskRow
+from ..schema import STORY_DB_SCHEMA
+from ..utils import _now
 from .schema import SCHEMA_VERSION
+
+_TASK_ROW_FIELDS = {f.name for f in dataclass_fields(TaskRow)}
 
 
 class StoryDB(_SQLiteBase):
@@ -39,7 +42,7 @@ class StoryDB(_SQLiteBase):
         family.mkdir(parents=True, exist_ok=True)
         super().__init__(family / "story.db")
         self.family_path = family
-        self._ensure_schema(STORY_SCHEMA + LOGGING_SCHEMA, SCHEMA_VERSION)
+        self._ensure_schema(STORY_DB_SCHEMA, SCHEMA_VERSION)
 
     # ========== State ==========
 
@@ -217,6 +220,7 @@ class StoryDB(_SQLiteBase):
         data = dict(row)
         del data["id"]
         data["dependencies"] = json.loads(data["dependencies"]) if data["dependencies"] else []
+        data = {k: v for k, v in data.items() if k in _TASK_ROW_FIELDS}
         return TaskRow(**data)
 
     # ========== Stages ==========

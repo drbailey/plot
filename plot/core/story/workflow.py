@@ -22,14 +22,15 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Annotated
 
-from plot.cli.commands import command
+from plot.cli.commands import Pos, command
 from plot.core.base.errors import WorkflowError
 from plot.core.config.paths import get_stories_dir, resolve_repo_paths
 from plot.core.target.scanner import ScanResult, scan_repos
 from plot.db import Events, StoryDB, StoryLogger
 
-APPROVAL_KEYWORD = "approve"
+APPROVAL_KEYWORDS = {"approved", "approve", "lgtm", "looks good", "proceed", "ship it", "ship"}
 
 __all__ = ["StoryWorkflow", "BeginResult", "begin", "WorkflowError"]
 
@@ -145,24 +146,20 @@ class StoryWorkflow:
         Raises:
             WorkflowError: When the operation cannot proceed.
         """
-        has_db = (self.story_path / "story.db").exists()
         resolved_repos = resolve_repo_paths(repo_path) if repo_path else []
+        state = self.db.get_state()
 
-        if not has_db and not resolved_repos:
+        if state is None and not resolved_repos:
             raise WorkflowError("New story requires a repo argument.")
 
-        if not has_db:
-            return self._begin_new(resolved_repos, max_iterations, max_attempts, user_context)
-
-        state = self.db.get_state()
         if state is None:
-            raise WorkflowError("story.db exists but has no state.")
+            return self._begin_new(resolved_repos, max_iterations, max_attempts, user_context)
 
         phase = state["phase"]
 
         if phase == "planning":
             user_ctx = (user_context or "").strip().lower()
-            if user_ctx == APPROVAL_KEYWORD:
+            if user_ctx in APPROVAL_KEYWORDS:
                 return self._begin_approve(state)
             return self._begin_revise(state, user_context)
 
@@ -320,7 +317,7 @@ class StoryWorkflow:
 @command(name="begin", help="Begin, revise, or approve a story.", group="story")
 def begin(
     story: str,
-    repo_path: str | None = None,
+    repo_path: Annotated[str | None, Pos(help="Repo path or comma-separated paths.")] = None,
     max_iterations: int = 20,
     max_attempts: int = 3,
     user_context: str | None = None,

@@ -1,6 +1,6 @@
 """SQLite schema for story workflow: state, tasks, and stages."""
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS schema_version (

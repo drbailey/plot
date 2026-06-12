@@ -1,5 +1,6 @@
 """SQLite implementation of StoryStore: state, tasks, and stages."""
 
+import contextlib
 import json
 import sqlite3
 from dataclasses import fields as dataclass_fields
@@ -43,6 +44,18 @@ class StoryDB(_SQLiteBase):
         super().__init__(family / "story.db")
         self.family_path = family
         self._ensure_schema(STORY_DB_SCHEMA, SCHEMA_VERSION)
+        self._migrate()
+
+    def _migrate(self) -> None:
+        """Apply incremental schema migrations for databases created before SCHEMA_VERSION 2."""
+        with self._connect() as conn:
+            row = conn.execute("SELECT version FROM schema_version LIMIT 1").fetchone()
+            stored = row["version"] if row else 0
+            if stored < 2:
+                for col, defn in [("verify_status", "TEXT"), ("verify_file", "TEXT")]:
+                    with contextlib.suppress(sqlite3.OperationalError):
+                        conn.execute(f"ALTER TABLE tasks ADD COLUMN {col} {defn}")  # noqa: S608
+                conn.execute("UPDATE schema_version SET version = 2")
 
     # ========== State ==========
 

@@ -17,6 +17,7 @@ import plot.core.story.knowledge_ops  # noqa: F401
 import plot.core.story.ops  # noqa: F401
 import plot.core.story.task_ops  # noqa: F401
 import plot.core.story.transitions  # noqa: F401
+import plot.core.story.verify  # noqa: F401
 import plot.core.story.workflow  # noqa: F401
 from plot.cli.builder import build_parser
 from plot.cli.commands import COMMAND_REGISTRY

@@ -29,8 +29,15 @@ def emit_result(result: Any, *, output_json: bool = False) -> None:
 
     The result must implement ``to_dict()`` (for JSON) and ``__str__()``
     (for text). All result dataclasses in plot.core should provide both.
+
+    After emitting the main output, any ``warnings`` attribute on the result
+    is printed to stderr in the format ``WARNING: <message>``.
     """
     if output_json:
         emit(json.dumps(result.to_dict(), indent=2))
     else:
         emit(str(result))
+    warnings = getattr(result, "warnings", None)
+    if warnings:
+        for warning in warnings:
+            print(f"WARNING: {warning}", file=sys.stderr)

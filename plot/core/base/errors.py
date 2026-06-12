@@ -3,7 +3,7 @@ Library-wide exception types for plot.core.
 
 Import from here rather than from individual modules:
 
-    from plot.core.errors import WorkflowError, PlotError
+    from plot.core.base.errors import WorkflowError, PlotError
 """
 
 

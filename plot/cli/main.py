@@ -13,10 +13,11 @@ Usage:
 import sys
 
 import plot.cli.stubs  # noqa: F401
-import plot.core.workflow  # noqa: F401
+import plot.core.story.ops  # noqa: F401
+import plot.core.story.workflow  # noqa: F401
 from plot.cli.builder import build_parser
 from plot.cli.commands import COMMAND_REGISTRY
-from plot.core import output
+from plot.core.base import output
 
 
 def main() -> None:

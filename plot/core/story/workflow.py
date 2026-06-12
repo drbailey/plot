@@ -11,11 +11,11 @@ Public API — class style (preferred for multi-step use)::
 
 Public API — function style (convenience, one-shot)::
 
-    from plot.core.workflow import begin, BeginResult
+    from plot.core.story.workflow import begin, BeginResult
 
     result = begin(story="my-story", repo_path="api_framework")
 
-Both raise WorkflowError (from plot.core.errors) on failure.
+Both raise WorkflowError (from plot.core.base.errors) on failure.
 """
 
 from __future__ import annotations
@@ -24,9 +24,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from plot.cli.commands import command
-from plot.core.config import get_stories_dir, resolve_repo_paths
-from plot.core.errors import WorkflowError
-from plot.core.scanner import ScanResult, scan_repos
+from plot.core.base.errors import WorkflowError
+from plot.core.config.paths import get_stories_dir, resolve_repo_paths
+from plot.core.target.scanner import ScanResult, scan_repos
 from plot.db import Events, StoryDB, StoryLogger
 
 APPROVAL_KEYWORD = "approve"
@@ -134,7 +134,7 @@ class StoryWorkflow:
         """Detect begin mode and execute the appropriate workflow step.
 
         Args:
-            repo_path: Comma-separated repo names or paths. Required for new stories.
+            repo_path: Comma-separated target names or paths. Required for new stories.
             max_iterations: Maximum execution iterations for new stories.
             max_attempts: Maximum attempts per task for new stories.
             user_context: Free-text context; ``"approve"`` transitions planning → init.

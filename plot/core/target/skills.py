@@ -189,9 +189,9 @@ def _expected_install_path(name: str) -> str:
 def _load_config(plot_dir: Path) -> dict[str, Any]:
     """Load and merge config.yml and config.local.yml from plot_dir.
 
-    Mirrors the logic in plot.core.config.load_config but accepts an explicit
-    directory so the function is testable without relying on the module-level
-    _CONFIG_DIR constant.
+    Mirrors the logic in plot.core.config.paths.load_config but accepts an
+    explicit directory so the function is testable without relying on the
+    module-level _CONFIG_DIR constant.
     """
     config: dict[str, Any] = {}
 

@@ -35,8 +35,8 @@ from pathlib import Path
 from typing import Annotated, Any, Literal, get_args, get_origin
 
 from plot.cli.commands import COMMAND_REGISTRY, Arg, CommandDefinition
-from plot.core import output
-from plot.core.errors import PlotError
+from plot.core.base import output
+from plot.core.base.errors import PlotError
 
 
 def build_parser(

@@ -1,9 +1,9 @@
 """
-Execution configuration registry for Plot repositories.
+Execution configuration registry for Plot targets.
 
-Responsibility: manage per-repo execution settings (env type, virtual env,
+Responsibility: manage per-target execution settings (env type, virtual env,
 container name, working directory, format/lint/test commands). Provides
-helpers to look up configs by repo name or full path and to load a registry
+helpers to look up configs by target name or full path and to load a registry
 from a YAML file.
 """
 
@@ -28,15 +28,15 @@ _REPO_CONFIGS: dict[str, ExecutionConfig] = {}
 
 
 def register_repo_config(name: str, config: ExecutionConfig) -> None:
-    """Register an ExecutionConfig under the given repo name or path."""
+    """Register an ExecutionConfig under the given target name or path."""
     _REPO_CONFIGS[name] = config
 
 
 def get_config_for_repo(path: str) -> ExecutionConfig:
-    """Look up ExecutionConfig by repo name, then full path, then return default.
+    """Look up ExecutionConfig by target name, then full path, then return default.
 
     Lookup order:
-    1. Last path component (repo name, e.g. ``api_framework``)
+    1. Last path component (target name, e.g. ``api_framework``)
     2. Full path string as registered
     3. Returns an empty ExecutionConfig if no match
     """
@@ -52,10 +52,10 @@ def load_repo_configs_from_yaml(path: str) -> dict[str, ExecutionConfig]:
     """Read a ``repos:`` YAML block into the global registry.
 
     Expects a YAML file with a top-level ``repos`` mapping where each key is a
-    repo name and each value is a dict of ExecutionConfig fields.  Updates
+    target name and each value is a dict of ExecutionConfig fields.  Updates
     ``_REPO_CONFIGS`` in place and returns the newly loaded configs.
 
-    Unknown keys in each repo block are silently ignored.
+    Unknown keys in each target block are silently ignored.
     """
     loaded: dict[str, ExecutionConfig] = {}
     p = Path(path)

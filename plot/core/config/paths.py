@@ -3,13 +3,13 @@ Configuration loading and path resolution for the Plot CLI.
 
 Responsibility: everything that reads user configuration or resolves paths from
 it.  This includes loading and merging YAML layers, exposing configured directory
-paths, resolving user-supplied repo strings, and returning per-role agent config.
+paths, resolving user-supplied target strings, and returning per-role agent config.
 Functions that are stateless and do not touch config or env vars belong in
-plot.core.utils instead.
+plot.core.base.utils instead.
 
 Loads config.yml (repo defaults) and overlays config.local.yml (user overrides).
-Config files are located at the repo root -- three levels above this module
-(plot/core/config.py -> core/ -> plot/ -> repo_root/).
+Config files are located at the repo root -- four levels above this module
+(plot/core/config/paths.py -> config/ -> core/ -> plot/ -> repo_root/).
 
 Priority for all path accessors:
   environment variable > config.local.yml > config.yml > built-in default
@@ -21,8 +21,8 @@ from typing import Any
 
 import yaml
 
-# Repo root: plot/core/config.py -> plot/core/ -> plot/ -> repo_root/
-_CONFIG_DIR = Path(__file__).parent.parent.parent
+# Repo root: plot/core/config/paths.py -> config/ -> core/ -> plot/ -> repo_root/
+_CONFIG_DIR = Path(__file__).parent.parent.parent.parent
 
 
 def _deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
@@ -99,7 +99,7 @@ def get_workspace_dir() -> Path:
 
 
 def resolve_repo_paths(raw: str) -> list[str]:
-    """Resolve comma-separated repo names/paths into absolute path strings.
+    """Resolve comma-separated target names/paths into absolute path strings.
 
     Bare names (no path separator, not starting with '~') are joined under
     the configured workspace directory.  Paths starting with '~' are

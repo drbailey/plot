@@ -1,15 +1,15 @@
 """
-Repository scanner for Plot.
+Target scanner for Plot.
 
 Responsibility: detect testing infrastructure, documentation, and agent
-configuration files in a repository path. Results power the enhanced
+configuration files in a target directory. Results power the enhanced
 ``plot begin`` command.
 """
 
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from plot.core.repo_config import ExecutionConfig, get_config_for_repo
+from plot.core.config.execution import ExecutionConfig, get_config_for_repo
 
 
 @dataclass
@@ -25,7 +25,7 @@ class ScanResult:
 
 
 def scan_repo(path: str) -> ScanResult:
-    """Scan a repository for testing, documentation, and agent configuration.
+    """Scan a target directory for testing, documentation, and agent configuration.
 
     Returns a populated ScanResult. If the path does not exist or is not a
     directory, ``repo_exists`` is False and ``errors`` contains a message.
@@ -60,13 +60,13 @@ def scan_repo(path: str) -> ScanResult:
 
 
 def scan_repos(paths: list[str]) -> ScanResult:
-    """Scan multiple repositories and merge results.
+    """Scan multiple target directories and merge results.
 
     Boolean capability flags (``is_git_repo``, ``testing_available``,
     ``readme_exists``, ``changelog_exists``) are OR-merged.
     ``test_framework`` takes the first non-None value.
-    ``agent_config`` entries are accumulated from all repos.
-    ``repo_exists`` is False if any repo is missing.
+    ``agent_config`` entries are accumulated from all targets.
+    ``repo_exists`` is False if any target is missing.
     """
     if not paths:
         return ScanResult()
@@ -130,12 +130,12 @@ def _detect_testing(
 
 
 def _detect_file(repo: Path, candidates: list[str]) -> bool:
-    """Return True if any candidate filename exists directly in the repo root."""
+    """Return True if any candidate filename exists directly in the target root."""
     return any((repo / name).exists() for name in candidates)
 
 
 def _detect_agent_config(repo: Path) -> list[dict[str, str]]:
-    """Detect agent/AI configuration files present in the repo."""
+    """Detect agent/AI configuration files present in the target."""
     found: list[dict[str, str]] = []
 
     checks = [

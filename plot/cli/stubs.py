@@ -15,7 +15,7 @@ from __future__ import annotations
 from typing import Annotated, Literal
 
 from plot.cli.commands import Arg, command
-from plot.core.errors import PlotError
+from plot.core.base.errors import PlotError
 
 # ── Task 10: story query and routing ──────────────────────────────────────────
 

@@ -48,6 +48,11 @@ def get_config_for_repo(path: str) -> ExecutionConfig:
     return ExecutionConfig()
 
 
+def get_configs_for_repos(paths: list[str]) -> list[tuple[str, ExecutionConfig]]:
+    """Return (path, config) pairs by calling get_config_for_repo for each path."""
+    return [(path, get_config_for_repo(path)) for path in paths]
+
+
 def load_repo_configs_from_yaml(path: str) -> dict[str, ExecutionConfig]:
     """Read a ``repos:`` YAML block into the global registry.
 

@@ -5,7 +5,7 @@ from pathlib import Path
 
 from ..clients.sqlite import _SQLiteBase
 from ..utils import _now
-from .models import RunRow, SearchResult
+from .models import PatternRow, RunRow, SearchResult
 from .schema import SCHEMA, SCHEMA_VERSION
 
 
@@ -148,6 +148,34 @@ class KnowledgeDB(_SQLiteBase):
                 (run_id, story, iteration, artifact_type, file_path, description, _now()),
             )
             return cur.lastrowid  # type: ignore[return-value]
+
+    # ---------- Patterns ---------- (query)
+
+    def get_patterns(self, tag: str | None = None, limit: int = 20) -> list[PatternRow]:
+        """Return patterns sorted by frequency desc, optionally filtered by tag."""
+        with self._connect() as conn:
+            if tag is not None:
+                cur = conn.execute(
+                    """
+                    SELECT id, run_id, tag, title, description, context, recorded_at, frequency
+                    FROM patterns
+                    WHERE tag = ?
+                    ORDER BY frequency DESC, recorded_at DESC
+                    LIMIT ?
+                    """,
+                    (tag, limit),
+                )
+            else:
+                cur = conn.execute(
+                    """
+                    SELECT id, run_id, tag, title, description, context, recorded_at, frequency
+                    FROM patterns
+                    ORDER BY frequency DESC, recorded_at DESC
+                    LIMIT ?
+                    """,
+                    (limit,),
+                )
+            return [PatternRow(**dict(row)) for row in cur.fetchall()]
 
     # ---------- Search ----------
 

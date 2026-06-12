@@ -1,25 +1,36 @@
 """
-CLI output utilities with verbosity control.
+Library output utilities.
 
-Replaces broadcast.py from v1 with a cleaner emit/set_verbosity interface.
+emit(message, level) prints to stdout when level <= default_verbosity.
+Level 0 always prints; higher levels are increasingly verbose.
+
+emit_result(result, output_json) formats and emits any result object that
+implements to_dict() and __str__(). Called by the CLI dispatcher after a
+successful command; core functions never call it directly.
+
+Callers set verbosity directly:  output.default_verbosity = 1
 """
 
-import logging
+import json
 import sys
+from typing import Any
 
-# Level for output that should always be shown regardless of verbosity setting.
-OUTPUT = 100
-
-_verbosity: int = logging.INFO
+default_verbosity: int = 0
 
 
-def emit(message: str, level: int = OUTPUT) -> None:
+def emit(message: str, level: int = 0) -> None:
+    """Print message if level <= default_verbosity."""
+    if level <= default_verbosity:
+        print(message, file=sys.stdout)
+
+
+def emit_result(result: Any, *, output_json: bool = False) -> None:
+    """Emit a result object as human-readable text or JSON.
+
+    The result must implement ``to_dict()`` (for JSON) and ``__str__()``
+    (for text). All result dataclasses in plot.core should provide both.
     """
-    Print a message if it meets the verbosity threshold.
-
-    Messages at logging.ERROR or above are written to stderr; all others to stdout.
-    """
-    if level < _verbosity:
-        return
-    file = sys.stderr if level >= logging.ERROR else sys.stdout
-    print(message, file=file)
+    if output_json:
+        emit(json.dumps(result.to_dict(), indent=2))
+    else:
+        emit(str(result))

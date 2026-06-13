@@ -1,0 +1,127 @@
+# Plot Workflow Router
+
+When the user's message **starts with** a Plot dot command, enter **Plot workflow mode**. Complete the routed step before unrelated work.
+
+**Always read first:** `plot/agent-rules.md`
+
+---
+
+## Commands
+
+| Command | Owns |
+|---------|------|
+| `.begin` | Planning: new plan, revise, approve, create tasks |
+| `.continue` | Execution: tasks, blocks, finalize, review, mr-info |
+| `.introspect` | Session retrospective (no CLI route) |
+
+---
+
+## `.begin <story> [repo[,repo...]]`
+
+**1. Run CLI (required):**
+
+```bash
+plot begin <story> ["<repo>"] [--user-context="<text>"]
+```
+
+- **New story:** include repo shorthand (`plot` → `{workspace}/plot`) or absolute path
+- **Approve:** `--user-context="approved"`
+- **Revise:** `--user-context="<feedback>"` from lines after the command line
+- Plan body: all lines after the first line
+
+**2. Template by MODE:**
+
+| MODE | Follow |
+|------|--------|
+| `new`, `new_plan`, `revise` | `plot/templates/planning.md` |
+| `approve` | `plot/templates/task-creation.md` |
+
+One planning action per invocation. Stop when the template says STOP.
+
+---
+
+## `.continue <story> [review | mr-info | context]`
+
+**1. Intercepts (check 2nd token before `plot next`):**
+
+| Token | Follow |
+|-------|--------|
+| `review` | `plot/templates/code-review-action.md` |
+| `mr-info` | `plot/templates/mr-info-action.md` |
+
+**2. Default — run router (required):**
+
+```bash
+plot next <story>
+```
+
+**3. Template by ACTION:**
+
+| ACTION | Follow |
+|--------|--------|
+| `execute_task` | `plot/templates/execution.md` |
+| `resolve_block`, `blocked` | `plot/templates/execution.md` |
+| `finalize`, `loop_complete` | `plot/templates/finalization.md` |
+| `already_complete` | Report finished; stop |
+| `awaiting_human`, `max_iterations` | Report reason; stop |
+
+Extra lines after the story name = inline execution context (not stored `user_context`). One action per `.continue`.
+
+---
+
+## `.introspect [focus_area]`
+
+Follow `plot/templates/introspect.md`. Text after the command narrows the analysis.
+
+---
+
+## Phases
+
+```
+planning → init → execution → (blocked?) → family_finalize → complete
+```
+
+- **planning** → `.begin`
+- **init** onward → `.continue` (`plot next` auto-transitions init → execution)
+- **family_finalize** → `.continue` loads finalization (not a separate dot command)
+
+---
+
+## CLI Quick Reference
+
+| Command | Purpose |
+|---------|---------|
+| `plot next <story>` | Route to next action |
+| `plot begin <story>` | Begin, revise, or approve a story |
+| `plot complete-task <story> <id>` | Mark task complete |
+| `plot fail-task <story> <id>` | Mark task failed |
+| `plot context <story> <id>` | Generate verifier context bundle |
+| `plot verify-submit <story> <id> <pass\|fail>` | Record verification result |
+| `plot skip-stage <story>` | Skip a stage |
+| `plot knowledge-search <query>` | Search the knowledge store |
+| `plot knowledge-query <sql>` | Raw SQL query against knowledge store |
+| `plot knowledge-record-pattern` | Record a reusable knowledge pattern |
+| `plot knowledge-record-decision` | Record an architectural decision |
+| `plot repo-config <story>` | Show lint/format/test commands for a repo |
+| `plot tasks <story>` | List remaining tasks |
+| `plot state <story>` | Show current story state |
+
+---
+
+## Examples
+
+```
+.begin my-story plot
+Add feature X with tests.
+
+.begin my-story approved
+
+.continue my-story
+
+.continue my-story review
+.continue my-story mr-info
+
+.introspect templates
+```
+
+Setup: `plot/config.local.yml` (copy from `plot/config.example.yml`). CLI: `plot --help`

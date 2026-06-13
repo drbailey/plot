@@ -232,7 +232,8 @@ class StoryDB(_SQLiteBase):
     def _row_to_task(self, row: sqlite3.Row) -> TaskRow:
         data = dict(row)
         del data["id"]
-        data["dependencies"] = json.loads(data["dependencies"]) if data["dependencies"] else []
+        raw_deps = json.loads(data["dependencies"]) if data["dependencies"] else []
+        data["dependencies"] = [int(d) for d in raw_deps]
         data = {k: v for k, v in data.items() if k in _TASK_ROW_FIELDS}
         return TaskRow(**data)
 

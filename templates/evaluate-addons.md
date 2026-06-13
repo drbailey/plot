@@ -10,7 +10,7 @@ Evaluate each addon's criteria against what is known about the current work (cod
 
 | Addon | Template | Include when |
 |-------|----------|--------------|
-| data-pipeline | `plot/templates/addons/data-pipeline.md` | Work involves data ingestion, transformation, schema changes, new or modified columns or fields, entity mapping changes, file output format changes, or database table modifications |
+| data-pipeline | `plot/templates/addons/data-pipeline.md` | Work involves data ingestion, transformation, database schema changes, new or modified database columns or fields, ORM/storage entity mapping changes, file output format changes, or database table modifications. Does NOT apply to API request/response model authoring (Pydantic, OpenAPI, etc.) unless those models directly mirror a storage schema change. |
 
 ---
 

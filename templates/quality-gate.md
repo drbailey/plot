@@ -23,6 +23,10 @@ If `lint_cmd` is returned, run it. If it passes, items 1b and 1c are satisfied.
 {ruff} check {src_dir}/
 ```
 
+`{src_dir}` is the **package or module root directory** (e.g. `clients/` or `src/`), not a list
+of individual files. Running on a directory catches cross-file issues (unused imports, missing
+re-exports) that per-file invocations miss.
+
 All errors must be resolved. Warnings may be noted in the work log but do not block.
 
 Ruff enforces line length, import ordering, and common style rules automatically. Additionally
@@ -33,6 +37,11 @@ verify by inspection: no imports appear inside functions, methods, or classes.
 ```bash
 {python} -m mypy {src_dir}/
 ```
+
+As with ruff, run against the **package directory**, not individual files. Per-file mypy
+invocations bypass cross-module type checking and may surface pre-existing errors in unrelated
+files without a clear attribution. Running against the package directory keeps the scope
+accurate. Pre-existing errors in files outside the task's scope may be noted but do not block.
 
 Run only if mypy is available in the virtualenv. All errors must be resolved before proceeding.
 

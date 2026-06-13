@@ -108,6 +108,13 @@ Read the `## Task Breakdown` section. For each task extract:
 - Approach steps
 - Any notes from assumptions, risks, or codebase context sections
 
+**Success criteria completeness:** If a task includes a requirements table (e.g., an endpoint
+table listing input fields and output fields), the numbered success criteria must cover every
+field and constraint in that table. Do not write criteria that cover only a subset of the table.
+If the plan's criteria are incomplete relative to its own table, expand them when creating the
+task definition file — the task file is the authoritative source for execution, and gaps here
+cause executor/verifier misalignment.
+
 ## Step 3: Create Task Files
 
 For **each** task in order:

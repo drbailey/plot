@@ -5,7 +5,14 @@ invocation — do not start a second task in the same session.
 
 ---
 
-**Before proceeding, read and follow:** `plot/agent-rules.md`
+**Before proceeding, read in parallel:** `plot/agent-rules.md`, `plot/config.local.yml`, and
+`plot/templates/quality-gate.md`
+
+These three reads are independent and must be issued as a single batched tool call. `agent-rules.md`
+contains behavioral rules; `config.local.yml` contains the path variables (`{plot}`, `{python}`,
+`{stories_dir}`) needed to run CLI commands; `quality-gate.md` contains the acceptance checklist
+you must satisfy before completion — read it now so you know the exit criteria before writing
+any code.
 
 Key variables: `{plot}`, `{python}`, `{stories_dir}`
 
@@ -84,11 +91,10 @@ missing information:
 
 4. Stop. Do not call `plot fail-task`.
 
-## Step 5: Quality Gate
+## Step 5: Quality Gate Sign-Off
 
-Before marking the task complete, run the full quality gate.
-
-Read `templates/quality-gate.md` and work through every item. For each failure:
+You read `quality-gate.md` at the start of this session. Work through every item now and confirm
+each one is satisfied. For each failure:
 
 1. Fix the issue.
 2. Record the fix in the work log.

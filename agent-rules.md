@@ -107,6 +107,18 @@ Rules:
 - Install packages into primary: `{python} -m pip install <package>`
 - Do not rely on `poetry run`, bare `python`, or bare tool names on PATH.
 
+### Windows Shell — Command Chaining
+
+On Windows (PowerShell), `&&` is not a valid statement separator. Use `;` to chain commands or issue them as separate tool calls. Never use `&&` in a PowerShell shell command.
+
+```powershell
+# Wrong — fails silently in PowerShell
+{ruff} check src/ && {python} -m mypy src/
+
+# Correct — separate calls or use ;
+{ruff} check src/; {python} -m mypy src/
+```
+
 ---
 
 ## Plot CLI

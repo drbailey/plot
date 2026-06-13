@@ -43,10 +43,6 @@ Analyze the request for ambiguities before writing anything:
 
 2. **If the plan is clear**: Continue immediately
 
-**Ask when:** design decisions affect task structure; scope is ambiguous; technical approach is unspecified; dependencies are unclear.
-
-**Do not ask when:** information is discoverable by reading the codebase; implementation details do not affect task structure.
-
 ### Step A2: Explore the Codebase
 
 Before writing the plan, understand the codebase:
@@ -57,13 +53,13 @@ Before writing the plan, understand the codebase:
 4. Note anything that affects task decomposition
 5. Run `{plot} skills` — if `mermaid-diagrams` is listed, use mermaid for all diagrams in the plan
 
-### Step A2.5: Evaluate Addons
+### Step A3: Evaluate Addons
 
-Read `templates/evaluate-addons.md` and evaluate its addon registry against what you know from Steps A1–A2. Note which addons are active — their templates will be read in Step A3.
+Read `templates/evaluate-addons.md` and evaluate its addon registry against what you know from Steps A1–A2. Note which addons are active — their templates will be read in Step A4.
 
-### Step A3: Generate `plan.md`
+### Step A4: Generate `plan.md`
 
-If any addons were identified in Step A2.5, read their template files now and follow their **Instructions** for which sections to add and where they go in the plan structure below.
+If any addons were identified in Step A3, read their template files now and follow their **Instructions** for which sections to add and where they go in the plan structure below.
 
 Create `{stories_dir}/{story}/story{n}/plan/plan.md` with this format:
 
@@ -160,7 +156,7 @@ graph LR
 - No separate testing tasks (testing happens at finalization)
 - Split by stage, not by item, when applying patterns to multiple entities
 
-### Step A4: Register Stage Skips
+### Step A5: Register Stage Skips
 
 For every stage marked `skipped` in the Stage Tracking table, run:
 
@@ -170,11 +166,11 @@ For every stage marked `skipped` in the Stage Tracking table, run:
 
 Do this for each skipped stage before generating the pre-design.
 
-### Step A5: Generate `pre-design.md`
+### Step A6: Generate `pre-design.md`
 
 Read `templates/pre-design.md` for the format. Distill `plan.md` into the pre-design structure. Write to `{stories_dir}/{story}/story{n}/plan/pre-design.md`.
 
-### Step A6: Log and Signal
+### Step A7: Log and Signal
 
 ```bash
 {plot} log {story} PLAN_DRAFT --task=0 -m "Draft plan created with {n} tasks"
@@ -208,7 +204,7 @@ Read `{stories_dir}/{story}/story{n}/plan/plan.md`
 
 1. Analyze the requested changes (from user_context or inline feedback)
 2. Re-explore the codebase if the changes affect technical decisions
-3. Re-evaluate addon criteria from Step A2.5 — addons may become applicable or inapplicable after revision
+3. Re-evaluate addon criteria from Step A3 — addons may become applicable or inapplicable after revision
 4. Update `plan.md`:
    - Increment revision number
    - Apply modifications
@@ -217,7 +213,7 @@ Read `{stories_dir}/{story}/story{n}/plan/plan.md`
    - Update Stage Tracking table if scope changes affect which stages apply
    - Add entry to Revision History
 5. Re-run `plot skip-stage` for any newly added skips; existing skip registrations remain valid
-6. Regenerate `pre-design.md` from the revised plan (read `templates/pre-design.md` for format)
+6. Regenerate `pre-design.md` following Step A6
 
 ### Step B3: Log and Signal
 
@@ -250,6 +246,4 @@ The plan has been approved. Read and follow `templates/task-creation.md` to crea
 {plot} state <story> [--json]
 {plot} log <story> <EVENT> [--task=ID] [-m MSG]
 {plot} skip-stage <story> <stage> -m "<reason>"
-{plot} approve-plan <story>
-{plot} new-plan <story> [--user-context=...]
 ```

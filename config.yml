@@ -19,6 +19,7 @@ paths:
 defaults:
   max_attempts_per_task: 3
   max_iterations: 21
+  max_test_iterations: 5
   task_file_pattern: "task-{n}-{slug}.md"
 
 # Agent model configuration

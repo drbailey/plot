@@ -54,6 +54,10 @@ agents:
     verifier:
       model: "claude-sonnet-4"
 
+# Execution limits (optional — override defaults from config.yml)
+# defaults:
+#   max_test_iterations: 5   # Max fix-and-retry cycles in the testing loop before blocking
+
 # User-registered skills (optional)
 # Register your own skills here for discovery via `plot skills`.
 # All user skills live under the skills.user key.

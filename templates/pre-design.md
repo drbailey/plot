@@ -1,7 +1,5 @@
 # Pre-Design Document Template
 
-**Before proceeding, read and follow:** `plot/agent-rules.md`
-
 This template defines the structure for a **pre-design document** — a concise summary of a plan intended for team review. It is generated alongside and derived from the detailed `plan.md`.
 
 ---
@@ -15,7 +13,7 @@ Target length: **1-3 pages** (roughly 500–1500 words, excluding diagrams).
 ## When to Generate
 
 A `pre-design.md` file MUST be generated or regenerated:
-- When `plan.md` is first created (Mode A Step A5 in `planning.md`)
+- When `plan.md` is first created (Mode A Step A6 in `planning.md`)
 - When `plan.md` is revised (Mode B Step B2 in `planning.md`)
 - The pre-design lives alongside the plan: `{stories_dir}/{story}/story{n}/plan/pre-design.md`
 

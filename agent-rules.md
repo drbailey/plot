@@ -6,7 +6,7 @@ All agents operating within this system must follow these rules.
 
 ## Configuration Variables
 
-These variables are substituted from `config.local.yml` at runtime. Copy `config.example.yml` to `config.local.yml` and set values for your environment.
+Variables are resolved by reading `config.yml` (repo defaults) then overlaying `config.local.yml` (user overrides). To override any variable, add its key to `config.local.yml`. Copy `config.example.yml` as a starting point.
 
 ### Paths (`paths.*`)
 
@@ -29,6 +29,12 @@ These variables are substituted from `config.local.yml` at runtime. Copy `config
 | `{agent_endpoint}` | `agents.default.endpoint` | API endpoint URL; empty string uses provider default |
 
 Per-role model settings inherit from `agents.default` and override only the fields they specify.
+
+### Execution Limits (`defaults.*`)
+
+| Variable | Key in config | Description |
+|----------|--------------|-------------|
+| `{max_test_iterations}` | `defaults.max_test_iterations` | Max fix-and-retry cycles in the finalization testing loop before blocking |
 
 ---
 

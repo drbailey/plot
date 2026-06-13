@@ -7,7 +7,7 @@ invocation — do not start a second task in the same session.
 
 **Before proceeding, read and follow:** `plot/agent-rules.md`
 
-Key variables: `{plot}`, `{python}`, `{stories_dir}`, `{workspace}`
+Key variables: `{plot}`, `{python}`, `{stories_dir}`
 
 ---
 
@@ -172,7 +172,6 @@ TASK_FAILED: {task_id} — {title}
 ## CLI Reference
 
 ```bash
-{plot} next {story}                                    # Route to next action
 {plot} tasks {story}                                   # List remaining tasks
 {plot} repo-config {story} [--json]                   # Show lint/format/test commands for repo
 {plot} context {story} {task_id}                      # Generate verification context bundle
